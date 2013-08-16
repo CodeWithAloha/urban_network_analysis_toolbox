@@ -105,19 +105,19 @@ def main():
       polylines = []
       polyline_data = []
     elif visualize_segments:
-      all_unique_segments = defaultdict(int)
+      all_unique_segment_counts = defaultdict(int)
     for destination_id in destination_ids:
       if origin_id != destination_id:
         all_paths = find_all_paths(network, points, INPUT_COEFF, origin_id,
             destination_id, INPUT_SEARCH_RADIUS, INPUT_COMPUTE_WAYFINDING)
         if all_paths is not None:
           if INPUT_COMPUTE_WAYFINDING:
-            (all_path_points, unique_network_segments, num_paths,
+            (all_path_points, unique_segment_counts, num_paths,
                 redundancy, waypoint) = all_paths
             answers.append([origin_id, destination_id, num_paths, redundancy,
                 waypoint])
           else:
-            (all_path_points, unique_network_segments, num_paths,
+            (all_path_points, unique_segment_counts, num_paths,
                 redundancy) = all_paths
             answers.append([origin_id, destination_id, num_paths, redundancy])
           if visualize_polylines:
@@ -126,8 +126,9 @@ def main():
                   path_points])))
               polyline_data.append((origin_id, destination_id, i))
           elif visualize_segments:
-            for edge_id in unique_network_segments:
-              all_unique_segments[edge_id] += 1
+            for edge_id in unique_segment_counts:
+              all_unique_segment_counts[edge_id] += unique_segment_counts[
+                  edge_id]
       progress_bar.step()
     AddMessage("\tDone.")
 
@@ -160,13 +161,13 @@ def main():
         add_layer_to_display(polylines_layer)
       elif visualize_segments:
         id_mapping, edges_file = select_edges_from_network(INPUT_NETWORK,
-            all_unique_segments.keys(), INPUT_OUTPUT_DIRECTORY, "%s_edges" %
-            INPUT_OUTPUT_FEATURE_CLASS_NAME)
+            all_unique_segment_counts.keys(), INPUT_OUTPUT_DIRECTORY,
+            "%s_edges" % INPUT_OUTPUT_FEATURE_CLASS_NAME)
         AddField_management(in_table=edges_file, field_name="PathCount",
             field_type="INTEGER")
         rows = UpdateCursor(edges_file, ["OID@", "PathCount"])
         for row in rows:
-          row[1] = all_unique_segments[id_mapping[row[0]]]
+          row[1] = all_unique_segment_counts[id_mapping[row[0]]]
           rows.updateRow(row)
       AddMessage("\tDone.")
     else:

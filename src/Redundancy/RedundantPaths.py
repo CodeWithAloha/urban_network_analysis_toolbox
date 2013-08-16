@@ -6,6 +6,7 @@ __author__ = 'mikemeko'
 __date__ = 'August 12, 2013'
 
 from arcpy import AddMessage
+from collections import defaultdict
 from Dijkstra import find_shortest_path
 
 def find_all_paths(network, points, coeff, origin_id, destination_id,
@@ -15,11 +16,12 @@ def find_all_paths(network, points, coeff, origin_id, destination_id,
       lists of 3D point tuples. |network| is the network in which the paths are
       to be computed. |points| is a mapping from point ids to csPoint objects.
       |coeff| is the redundancy coefficient, assumed to be at least 1. Also
-      returns the unique network segments invloved in all of the paths, the
-      number of paths, the redundancy index, and the wayfinding index (if
-      requested as per |compute_wayfinding|). Returns None if the shortest path
-      between the two points is greater than |search_radius| or there is no
-      network path between the two points.
+      returns a mapping from the network segments invloved in all of the paths
+      to the number of times each segment used, the number of paths, the
+      redundancy index, and the wayfinding index (if requested as per
+      |compute_wayfinding|). Returns None if the shortest path between the two
+      points is greater than |search_radius| or there is no network path between
+      the two points.
   """
   # print current OD pair
   AddMessage("O=%s D=%s" % (origin_id, destination_id))
@@ -51,24 +53,26 @@ def find_all_paths(network, points, coeff, origin_id, destination_id,
   #     junction) reaches D without exceeding the quota
   if compute_wayfinding:
     wayfinding = sum(path_obj.Prob for path_obj in paths)
-  # compute redundancy index
-  unique_segments = reduce(set.union, [set(path_obj.Edges) for path_obj in
-      paths], set())
+  # compute redundancy index and unique network segment counts
+  unique_segments = set()
+  unique_network_segment_counts = defaultdict(int)
+  for path_obj in paths:
+    for edge_id in path_obj.Edges:
+      unique_segments.add(edge_id)
+      unique_network_segment_counts[network.originalEdge(edge_id)] += 1
   unique_segments_total_dist = sum(network.Edges[edge_id].Length for edge_id in
       unique_segments)
   # TODO(mikemeko, raul_kalvo): think of better ideas for what to do when
   #     redundancy index denominator is 0
   redundancy =  (unique_segments_total_dist / shortest_path_dist if
       shortest_path_dist > 0 else 1)
-  # compute unique network segments
-  unique_network_segments = set(map(network.originalEdge, unique_segments))
   # result
   results = ["Number of paths=%d" % len(paths), "Redundancy=%.5f" % redundancy]
   if compute_wayfinding:
     results.append("Wayfinding=%.5f" % wayfinding)
   AddMessage(", ".join(results))
   network.clearPsudoNodes()
-  output = [path_points, unique_network_segments, len(paths), redundancy]
+  output = [path_points, unique_network_segment_counts, len(paths), redundancy]
   if compute_wayfinding:
     output.append(wayfinding)
   return output
