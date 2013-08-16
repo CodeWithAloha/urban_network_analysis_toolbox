@@ -11,15 +11,12 @@
 Constants.
 """
 
-from os.path import abspath
 from os.path import join
-from os.path import pardir
 from sys import maxint
 from sys import path
 
 # Location of Scripts
 SCRIPT_DIR = path[0]
-SCRIPT_PARENT_DIR = abspath(join(SCRIPT_DIR, pardir))
 
 # The six steps of the tool
 STEP_1 = "Computing adjacency list"
@@ -183,10 +180,10 @@ DESTINATION_ID_FIELD_NAME = "DestinationID"
 # File names
 feature_class_name = lambda base: "%s_Featureclass" % base
 layer_name = lambda base: "%s_Layer" % base
-symbology_layer_name= lambda shape_type, first_metric: (
+get_symbology_layer_name= lambda shape_type, first_metric: (
     "%s_%s_Symbology_Layer.lyr" % (shape_type, first_metric))
 SYMBOLOGY_DIR_NAME = "Symbology_Layers"
-SYMBOLOGY_DIR = join(SCRIPT_PARENT_DIR, SYMBOLOGY_DIR_NAME)
+SYMBOLOGY_DIR = join(SCRIPT_DIR, SYMBOLOGY_DIR_NAME)
 ADJACENCY_LIST_NAME = "Adj"
 AUXILIARY_DIR_NAME = "Auxiliary_Files"
 OD_COST_MATRIX_LAYER_NAME = layer_name("OD_Cost_Matrix")

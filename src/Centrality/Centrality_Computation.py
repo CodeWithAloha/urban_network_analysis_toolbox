@@ -12,6 +12,7 @@ Script for the computation of the five centrality metrics.
 """
 
 from arcpy import AddWarning
+from Common.Utils.Progress_Bar import Progress_Bar
 from Constants import BETWEENNESS
 from Constants import CLOSENESS
 from Constants import GRAVITY
@@ -38,7 +39,6 @@ from Utils import eq_tol
 from Utils import Invalid_Parameters_Exception
 from Utils import lt_tol
 from Utils import merge_maps
-from Utils import Progress_Bar
 
 def compute_centrality(nodes, origins, compute_r, compute_g, compute_b,
     compute_c, compute_s, radius, network_radius, beta, measures_to_normalize,

@@ -18,10 +18,6 @@ from arcpy import Delete_management
 from arcpy import Describe
 from arcpy import Exists
 from arcpy import FeatureToPoint_management
-from arcpy import ResetProgressor
-from arcpy import SetProgressor
-from arcpy import SetProgressorLabel
-from arcpy import SetProgressorPosition
 from arcpy import UpdateCursor
 from Constants import CALCULATE_LOCATIONS_FINISHED
 from Constants import CALCULATE_LOCATIONS_STARTED
@@ -56,51 +52,6 @@ class Invalid_Parameters_Exception(Exception):
   Exception thrown when parameters to a method are invalid
   """
   pass
-
-class Progress_Bar:
-  """
-  Wrapper for the arcpy progress bar
-  """
-
-  def __init__(self, n, p, caption):
-    """
-    |n|: number of steps to count to
-    |p|: display is updated every |p| steps
-    |caption|: message to display with the progress bar
-    """
-    self.n = n
-    self.p = p
-    self.caption = caption
-    # Create progress bar
-    self.bar = self.progress_bar()
-    # Start progress bar
-    self.step()
-
-  def step(self):
-    """
-    Move the progress bar by 1 step
-    """
-    self.bar.next()
-
-  def progress_bar(self):
-    """
-    A generator representation of the arcpy progressor
-    """
-    # Setup progressor with min, max, interval, and label
-    SetProgressor("step", "", 0, self.n, self.p)
-    SetProgressorLabel(self.caption)
-    # Counter
-    count = 0
-    while True:
-      # Update display
-      if count % self.p == 0:
-        SetProgressorPosition(count)
-      # Finished?
-      if count == self.n:
-        SetProgressorLabel("")
-        ResetProgressor()
-      count += 1
-      yield
 
 def to_point_feature_class(feature_class, point_feature_class, point_location):
   """

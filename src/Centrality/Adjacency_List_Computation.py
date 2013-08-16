@@ -30,6 +30,7 @@ from arcpy import SelectLayerByLocation_management
 from arcpy import Solve_na
 from arcpy import TableToTable_conversion
 from arcpy import UpdateCursor
+from Common.Utils.Progress_Bar import Progress_Bar
 from Constants import ADDING_DESTINATIONS_STARTED
 from Constants import ADDING_DESTINATIONS_FINISHED
 from Constants import ADDING_BARRIERS_STARTED
@@ -62,7 +63,6 @@ from os.path import join
 from Utils import calculate_network_locations
 from Utils import delete
 from Utils import network_features
-from Utils import Progress_Bar
 from Utils import row_has_field
 from Utils import trim
 
