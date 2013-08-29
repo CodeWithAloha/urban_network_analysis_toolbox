@@ -436,7 +436,10 @@ class csNode(object):
         return d
     # Properties
     def setPoint(self, POINT):
-        # TODO(raul_kalvo): what type is that point?
+        """
+        PARAMETERS:
+            POINT :  (x:float,y:float,z:flaot)
+        """
         self.p = POINT
     def getPoint(self):
         return self.p
