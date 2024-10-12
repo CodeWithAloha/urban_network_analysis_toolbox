@@ -40,9 +40,10 @@ from Utils import Invalid_Parameters_Exception
 from Utils import lt_tol
 from Utils import merge_maps
 
+
 def compute_centrality(nodes, origins, compute_r, compute_g, compute_b,
-    compute_c, compute_s, radius, network_radius, beta, measures_to_normalize,
-    accumulator_fields):
+                       compute_c, compute_s, radius, network_radius, beta, measures_to_normalize,
+                       accumulator_fields):
   """
   Computes reach, gravity, betweenness, closeness, and straightness on a graph.
   |nodes|: graph representation; dictionary mapping node id's to |Node| objects
@@ -72,7 +73,7 @@ def compute_centrality(nodes, origins, compute_r, compute_g, compute_b,
   have_accumulations = len(accumulator_fields) > 0
   if have_accumulations:
     empty_accumulations = lambda: dict((field, 0.0) for field in
-        accumulator_fields)
+                                       accumulator_fields)
   have_locations = hasattr(nodes.values()[0], LOCATION)
   if compute_s and not have_locations:
     # We cannot compute straightness without node locations
@@ -91,7 +92,8 @@ def compute_centrality(nodes, origins, compute_r, compute_g, compute_b,
     if s not in nodes:
       continue
     weight_s = getattr(nodes[s], WEIGHT)
-    if have_locations: location_s = getattr(nodes[s], LOCATION)
+    if have_locations:
+      location_s = getattr(nodes[s], LOCATION)
 
     sum_weights += weight_s
 
@@ -101,14 +103,17 @@ def compute_centrality(nodes, origins, compute_r, compute_g, compute_b,
     weighted_reach_s = -weight_s
 
     # Initialize measures
-    if compute_g: gravity_s = 0.0
+    if compute_g:
+      gravity_s = 0.0
     if compute_b:
-      P = {s: []} # Predecessors
-      S = [] # Stack containing nodes in the order they are extended
-      sigma = {s: 1.0} # Number of shortest paths from |s| to other nodes
-      delta = {} # Dependency of |s| on other nodes
-    if compute_c: d_sum_s = 0.0
-    if compute_s: straightness_s = 0.0
+      P = {s: []}  # Predecessors
+      S = []  # Stack containing nodes in the order they are extended
+      sigma = {s: 1.0}  # Number of shortest paths from |s| to other nodes
+      delta = {}  # Dependency of |s| on other nodes
+    if compute_c:
+      d_sum_s = 0.0
+    if compute_s:
+      straightness_s = 0.0
     if have_accumulations:
       accumulations_s = {s: empty_accumulations()}
 
@@ -141,10 +146,12 @@ def compute_centrality(nodes, origins, compute_r, compute_g, compute_b,
         reach_s += 1
         weighted_reach_s += weight_v
         if d_sv > 0:
-          if compute_g: gravity_s += weight_v * exp(-d_sv * beta)
-          if compute_c: d_sum_s += weight_v * d_sv
-          if compute_s: straightness_s += (weight_v *
-              dist(location_s, location_v) / d_sv)
+          if compute_g:
+            gravity_s += weight_v * exp(-d_sv * beta)
+          if compute_c:
+            d_sum_s += weight_v * d_sv
+          if compute_s:
+            straightness_s += (weight_v * dist(location_s, location_v) / d_sv)
         if compute_b: S.append(v)
 
       for w, d_vw, accumulations_vw in getattr(nodes[v], NEIGHBORS):
@@ -159,13 +166,13 @@ def compute_centrality(nodes, origins, compute_r, compute_g, compute_b,
 
         add_w_to_Q = False
 
-        if not w in d: # Found a path from |s| to |w| for the first time
+        if not w in d:  # Found a path from |s| to |w| for the first time
           if d_sw <= radius or not network_radius:
             add_w_to_Q = True
           d[w] = d_sw
           if compute_b: b_refresh = True
 
-        elif lt_tol(d_sw, d[w]): # Found a better path from |s| to |w|
+        elif lt_tol(d_sw, d[w]):  # Found a better path from |s| to |w|
           if d_sw <= radius or not network_radius:
             if d[w] <= radius or not network_radius:
               longer_path_node = (d[w], w) if network_radius else (d[w], w,
@@ -174,7 +181,8 @@ def compute_centrality(nodes, origins, compute_r, compute_g, compute_b,
               heapify(Q)
             add_w_to_Q = True
           d[w] = d_sw
-          if compute_b: b_refresh = True
+          if compute_b:
+            b_refresh = True
 
         if add_w_to_Q:
           new_node = (d_sw, w) if network_radius else (d_sw, w, dist_sw)
@@ -187,15 +195,17 @@ def compute_centrality(nodes, origins, compute_r, compute_g, compute_b,
           if b_refresh:
             sigma[w] = 0.0
             P[w] = []
-          if eq_tol(d_sw, d[w]): # Count all shortest paths from |s| to |w|
-            sigma[w] += sigma[v] # Update the number of shortest paths
-            P[w].append(v) # |v| is a predecessor of |w|
-            delta[v] = 0.0 # Recognize |v| as a predecessor
+          if eq_tol(d_sw, d[w]):  # Count all shortest paths from |s| to |w|
+            sigma[w] += sigma[v]  # Update the number of shortest paths
+            P[w].append(v)  # |v| is a predecessor of |w|
+            delta[v] = 0.0  # Recognize |v| as a predecessor
 
-    if compute_r: setattr(nodes[s], REACH, weighted_reach_s)
-    if compute_g: setattr(nodes[s], GRAVITY, gravity_s)
+    if compute_r:
+      setattr(nodes[s], REACH, weighted_reach_s)
+    if compute_g:
+      setattr(nodes[s], GRAVITY, gravity_s)
     if compute_b:
-      while S: # Revisit nodes in reverse order of distance from |s|
+      while S:  # Revisit nodes in reverse order of distance from |s|
         w = S.pop()
         delta_w = delta[w] if w in delta else 0.0 # Dependency of |s| on |w|
         for v in P[w]:
@@ -236,34 +246,41 @@ def compute_centrality(nodes, origins, compute_r, compute_g, compute_b,
       # Normalize reach
       if compute_r and REACH in measures_to_normalize:
         weight_s = getattr(nodes[s], WEIGHT)
-        try: setattr(nodes[s], NORM_REACH, reach_s / (sum_weights - weight_s))
-        except: setattr(nodes[s], NORM_REACH, 0.0)
+        try:
+          setattr(nodes[s], NORM_REACH, reach_s / (sum_weights - weight_s))
+        except:
+          setattr(nodes[s], NORM_REACH, 0.0)
 
       # Normalize gravity
       if compute_g and GRAVITY in measures_to_normalize:
         gravity_s = getattr(nodes[s], GRAVITY)
-        try: setattr(nodes[s], NORM_GRAVITY, (exp(beta) * gravity_s /
-            weighted_reach_s))
-        except: setattr(nodes[s], NORM_GRAVITY, 0.0)
+        try:
+          setattr(nodes[s], NORM_GRAVITY, (exp(beta) * gravity_s / weighted_reach_s))
+        except:
+          setattr(nodes[s], NORM_GRAVITY, 0.0)
 
       # Normalize betweenness
       if compute_b and BETWEENNESS in measures_to_normalize:
         betweenness_s = getattr(nodes[s], BETWEENNESS)
-        try: setattr(nodes[s], NORM_BETWEENNESS, (betweenness_s /
-            (weighted_reach_s * (reach_s - 1))))
-        except: setattr(nodes[s], NORM_BETWEENNESS, 0.0)
+        try:
+          setattr(nodes[s], NORM_BETWEENNESS, (betweenness_s / (weighted_reach_s * (reach_s - 1))))
+        except:
+            setattr(nodes[s], NORM_BETWEENNESS, 0.0)
 
       # Normalize closeness
       if compute_c and CLOSENESS in measures_to_normalize:
         closeness_s = getattr(nodes[s], CLOSENESS)
-        try: setattr(nodes[s], NORM_CLOSENESS, closeness_s * weighted_reach_s)
-        except: setattr(nodes[s], NORM_CLOSENESS, 0.0)
+        try:
+          setattr(nodes[s], NORM_CLOSENESS, closeness_s * weighted_reach_s)
+        except:
+          setattr(nodes[s], NORM_CLOSENESS, 0.0)
 
       # Normalize straightness
       if compute_s and STRAIGHTNESS in measures_to_normalize:
         straightness_s = getattr(nodes[s], STRAIGHTNESS)
-        try: setattr(nodes[s], NORM_STRAIGHTNESS, (straightness_s /
-            weighted_reach_s))
-        except: setattr(nodes[s], NORM_STRAIGHTNESS, 0.0)
+        try:
+          setattr(nodes[s], NORM_STRAIGHTNESS, (straightness_s / weighted_reach_s))
+        except:
+          setattr(nodes[s], NORM_STRAIGHTNESS, 0.0)
 
       norm_progress.step()

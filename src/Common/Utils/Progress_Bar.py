@@ -9,6 +9,7 @@ from arcpy import SetProgressor
 from arcpy import SetProgressorLabel
 from arcpy import SetProgressorPosition
 
+
 class Progress_Bar:
   """
   Wrapper for the arcpy progress bar.
@@ -26,11 +27,13 @@ class Progress_Bar:
     self._bar = self._progress_bar()
     # Start progress bar
     self.step()
+
   def step(self):
     """
     Move the progress bar by 1 step
     """
-    self._bar.next()
+    next(self._bar)
+
   def _progress_bar(self):
     """
     A generator representation of the arcpy progressor

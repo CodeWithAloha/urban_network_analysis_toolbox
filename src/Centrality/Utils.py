@@ -19,15 +19,15 @@ from arcpy import Describe
 from arcpy import Exists
 from arcpy import FeatureToPoint_management
 from arcpy import UpdateCursor
-from Constants import CALCULATE_LOCATIONS_FINISHED
-from Constants import CALCULATE_LOCATIONS_STARTED
-from Constants import EDGE_FEATURE
-from Constants import JUNCTION_FEATURE
-from Constants import POINT_CONVERSION_DONE
-from Constants import SEARCH_TOLERANCE
-from Constants import TOLERANCE
-from Constants import WARNING_NO_EDGE_FEATURE
-from Constants import WARNING_NO_JUNCTION_FEATURE
+from .Constants import CALCULATE_LOCATIONS_FINISHED
+from .Constants import CALCULATE_LOCATIONS_STARTED
+from .Constants import EDGE_FEATURE
+from .Constants import JUNCTION_FEATURE
+from .Constants import POINT_CONVERSION_DONE
+from .Constants import SEARCH_TOLERANCE
+from .Constants import TOLERANCE
+from .Constants import WARNING_NO_EDGE_FEATURE
+from .Constants import WARNING_NO_JUNCTION_FEATURE
 from math import sqrt
 from os import remove
 from os import rmdir
@@ -35,6 +35,7 @@ from os.path import basename as os_basename
 from os.path import isfile
 from os.path import isdir
 from os.path import splitext
+
 
 class Invalid_Input_Exception(Exception):
   """
@@ -47,11 +48,13 @@ class Invalid_Input_Exception(Exception):
     """
     Exception.__init__(self, "Invalid Input: %s" % input_name)
 
+
 class Invalid_Parameters_Exception(Exception):
   """
   Exception thrown when parameters to a method are invalid
   """
   pass
+
 
 def to_point_feature_class(feature_class, point_feature_class, point_location):
   """
@@ -62,12 +65,13 @@ def to_point_feature_class(feature_class, point_feature_class, point_location):
     AddMessage(POINT_CONVERSION_DONE)
   else:
     FeatureToPoint_management(in_features=feature_class,
-        out_feature_class=point_feature_class,
-        point_location=point_location)
+                              out_feature_class=point_feature_class,
+                              point_location=point_location)
+
 
 def all_values_in_column(table, column):
   """
-  Returns a set of all the values in the some column of a table
+  Returns a set of all the values in some column of a table
   |table|: a dbf
   |column|: the name of a column in the table, the column must be in the table
   """
@@ -76,6 +80,7 @@ def all_values_in_column(table, column):
   for row in rows:
     values.add(row.getValue(column))
   return values
+
 
 def network_features(network):
   """
@@ -89,13 +94,14 @@ def network_features(network):
       edge_feature = source.name
     elif source.sourceType in JUNCTION_FEATURE:
       junction_feature = source.name
-  if edge_feature == None:
+  if edge_feature is None:
     AddWarning(WARNING_NO_EDGE_FEATURE(network))
     raise Invalid_Input_Exception("Input Network")
-  if junction_feature == None:
+  if junction_feature is None:
     AddWarning(WARNING_NO_JUNCTION_FEATURE(network))
     raise Invalid_Input_Exception("Input Network")
-  return (junction_feature, edge_feature)
+  return junction_feature, edge_feature
+
 
 def calculate_network_locations(points, network):
   """
@@ -105,12 +111,13 @@ def calculate_network_locations(points, network):
   """
   AddMessage(CALCULATE_LOCATIONS_STARTED)
   CalculateLocations_na(in_point_features=points,
-      in_network_dataset=network,
-      search_tolerance=SEARCH_TOLERANCE,
-      search_criteria=("%s SHAPE; %s SHAPE;" %
-          network_features(network)),
-      exclude_restricted_elements="INCLUDE")
+                        in_network_dataset=network,
+                        search_tolerance=SEARCH_TOLERANCE,
+                        search_criteria=("%s SHAPE; %s SHAPE;" %
+                                         network_features(network)),
+                        exclude_restricted_elements="INCLUDE")
   AddMessage(CALCULATE_LOCATIONS_FINISHED)
+
 
 def eq_tol(a, b):
   """
@@ -118,17 +125,20 @@ def eq_tol(a, b):
   """
   return abs(a - b) <= TOLERANCE
 
+
 def lt_tol(a, b):
   """
   Returns True if |a| is less than |b| by more than |TOLERANCE|, False otherwise
   """
   return b - a > TOLERANCE
 
+
 def basename(path):
   """
   Returns the base name of |path|, not including the extension
   """
   return splitext(os_basename(path))[0]
+
 
 def delete(path):
   """
@@ -148,12 +158,14 @@ def delete(path):
     except:
       pass
 
+
 def trim(field_name):
   """
   Returns the first 10 characters of |field_name|
   (DBF files truncate field names to 10 characters)
   """
   return field_name[:10]
+
 
 def dist(loc1, loc2):
   """
@@ -164,6 +176,7 @@ def dist(loc1, loc2):
   x1, y1 = loc1
   x2, y2 = loc2
   return sqrt((x1 - x2)**2 + (y1 - y2)**2)
+
 
 def merge_maps(map1, map2, f):
   """
@@ -177,6 +190,7 @@ def merge_maps(map1, map2, f):
     comb_map[key] = f(map1[key], map2[key])
   return comb_map
 
+
 def row_has_field(row, field):
   """
   Returns True if |row| has the field |field|, False otherwise
@@ -186,6 +200,7 @@ def row_has_field(row, field):
     return True
   except:
     return False
+
 
 def is_accumulator_field(field):
   """

@@ -21,17 +21,18 @@ from arcpy import SaveToLayerFile_management
 from arcpy.da import UpdateCursor
 from collections import defaultdict
 from Common.Utils.Progress_Bar import Progress_Bar
-from Network import construct_network_and_load_buildings
+from .Network import construct_network_and_load_buildings
 from os.path import join
-from RedundantPaths import find_all_paths
+from .RedundantPaths import find_all_paths
 from sys import argv
 from sys import path
-from Utils import add_layer_to_display
-from Utils import flagged_points
-from Utils import is_number
-from Utils import network_cost_attributes
-from Utils import select_edges_from_network
-from Utils import write_rows_to_csv
+from .Utils import add_layer_to_display
+from .Utils import flagged_points
+from .Utils import is_number
+from .Utils import network_cost_attributes
+from .Utils import select_edges_from_network
+from .Utils import write_rows_to_csv
+
 
 def main():
     # tool inputs
@@ -69,10 +70,10 @@ def main():
 
     # check that the output file does not already exist
     output_feature_class = "%s.shp" % join(INPUT_OUTPUT_DIRECTORY,
-        INPUT_OUTPUT_FEATURE_CLASS_NAME)
+                                           INPUT_OUTPUT_FEATURE_CLASS_NAME)
     if Exists(output_feature_class):
       AddError("Output feature class <%s> already exists" %
-          output_feature_class)
+               output_feature_class)
       return
 
     # obtain visualization method
@@ -83,7 +84,7 @@ def main():
       visualize_polylines = True
     elif INPUT_VISUALIZATION != "None":
       AddError("Visualization method <%s> must be one of 'Unique Segments', "
-          "'Path Polylines', or 'None'" % INPUT_VISUALIZATION)
+               "'Path Polylines', or 'None'" % INPUT_VISUALIZATION)
       return
 
     # setup
@@ -137,14 +138,14 @@ def main():
       AddMessage("Writing out results ...")
       # write out to a table
       write_rows_to_csv(answers, INPUT_OUTPUT_DIRECTORY,
-          INPUT_OUTPUT_FEATURE_CLASS_NAME)
+                        INPUT_OUTPUT_FEATURE_CLASS_NAME)
       # visualize
       if visualize_polylines:
         CopyFeatures_management(polylines, output_feature_class)
         data_fields = ["OrigID", "DestID", "PathID"]
         for field in data_fields:
           AddField_management(in_table=output_feature_class, field_name=field,
-              field_type="INTEGER")
+                              field_type="INTEGER")
         rows = UpdateCursor(output_feature_class, data_fields)
         for j, row in enumerate(rows):
           row[0], row[1], row[2] = polyline_data[j]
@@ -152,19 +153,20 @@ def main():
         # create a layer of the polylines shapefile and symbolize
         polylines_layer_name = "%s_layer" % INPUT_OUTPUT_FEATURE_CLASS_NAME
         polylines_layer = "%s.lyr" % join(INPUT_OUTPUT_DIRECTORY,
-            INPUT_OUTPUT_FEATURE_CLASS_NAME)
+                                          INPUT_OUTPUT_FEATURE_CLASS_NAME)
         MakeFeatureLayer_management(output_feature_class, polylines_layer_name)
         SaveToLayerFile_management(polylines_layer_name, polylines_layer,
-            "ABSOLUTE")
+                                   "ABSOLUTE")
         ApplySymbologyFromLayer_management(polylines_layer, join(path[0],
-            "Symbology_Layers\sample_polylines_symbology.lyr"))
+                                                                 "Symbology_Layers",
+                                                                 "sample_polylines_symbology.lyr"))
         add_layer_to_display(polylines_layer)
       elif visualize_segments:
         id_mapping, edges_file = select_edges_from_network(INPUT_NETWORK,
-            all_unique_segment_counts.keys(), INPUT_OUTPUT_DIRECTORY,
+            list(all_unique_segment_counts.keys()), INPUT_OUTPUT_DIRECTORY,
             "%s_edges" % INPUT_OUTPUT_FEATURE_CLASS_NAME)
         AddField_management(in_table=edges_file, field_name="PathCount",
-            field_type="INTEGER")
+                            field_type="INTEGER")
         rows = UpdateCursor(edges_file, ["OID@", "PathCount"])
         for row in rows:
           row[1] = all_unique_segment_counts[id_mapping[row[0]]]

@@ -7,8 +7,9 @@ __date__ = 'August 8, 2013'
 
 from collections import defaultdict
 from Common.Data_Structures.PriorityQueue import PriorityQueue
-from Network import csNetwork
-from Utils import memoized
+from .Network import csNetwork
+from .Utils import memoized
+
 
 def _path(parent, node):
   """
@@ -24,8 +25,9 @@ def _path(parent, node):
     node = node_parent
   return list(reversed(backward_path))
 
+
 def find_shortest_path(network, origin, destination=None, nodes_to_avoid=None,
-    max_dist=float('inf')):
+                       max_dist=float('inf')):
   """
   Returns the shortest path(s) from |origin| in |network|. If |destination| is
       given, returns a list of the edge ids for the path as well as the shortest
@@ -44,15 +46,15 @@ def find_shortest_path(network, origin, destination=None, nodes_to_avoid=None,
     raise Exception("Unexpected node: %s" % origin)
   if destination is not None and destination not in network.Nodes:
     raise Exception("Unexpected node: %s" % destination)
+
   @memoized
   def _heuristic(node_id):
     """
     Use buird's eye distance for heuristic.
     """
     return (network.Nodes[node_id].distanceTo(network.Nodes[destination].Point)
-        if destination is not None else 0)
-  parent = {}
-  parent[origin] = None
+            if destination is not None else 0)
+  parent = {origin: None}
   distance = defaultdict(lambda: float('inf'))
   distance[origin] = 0
   agenda = PriorityQueue([(0, origin)])

@@ -30,101 +30,102 @@ from arcpy import SaveToLayerFile_management
 from arcpy import SelectLayerByAttribute_management
 from arcpy import SetParameterAsText
 from arcpy import UpdateCursor
-from Adjacency_List_Computation import compute_adjacency_list
-from Centrality_Computation import compute_centrality
+from .Adjacency_List_Computation import compute_adjacency_list
+from .Centrality_Computation import compute_centrality
 from Common.Utils.Progress_Bar import Progress_Bar
-from Constants import ACCUMULATOR_ATTRIBUTES
-from Constants import ADJACENCY_LIST_COMPUTED
-from Constants import ADJACENCY_LIST_NAME
-from Constants import AUXILIARY_DIR_NAME
-from Constants import BETA
-from Constants import COMPUTE_BETWEENNESS
-from Constants import COMPUTE_CLOSENESS
-from Constants import COMPUTE_GRAVITY
-from Constants import COMPUTE_REACH
-from Constants import COMPUTE_STRAIGHTNESS
-from Constants import DESTINATION_ID_FIELD_NAME
-from Constants import FAILURE
-from Constants import feature_class_name
-from Constants import FINAL_ATTRIBUTES
-from Constants import get_symbology_layer_name
-from Constants import ID_ATTRIBUTE
-from Constants import IMPEDANCE_ATTRIBUTE
-from Constants import index
-from Constants import INFINITE_RADIUS
-from Constants import INPUT_BUILDINGS
-from Constants import INPUT_BUILDINGS_COPY_FAILED
-from Constants import INPUT_BUILDINGS_COPY_FINISHED
-from Constants import INPUT_BUILDINGS_COPY_STARTED
-from Constants import INPUT_COUNT
-from Constants import INPUT_NETWORK
-from Constants import INPUT_POINTS
-from Constants import INPUT_POINTS_LAYER_NAME
-from Constants import layer_name
-from Constants import LOCATION
-from Constants import MAX_FILE_NAME_LENGTH
-from Constants import METRICS
-from Constants import NODE_WEIGHT_ATTRIBUTE
-from Constants import NORMALIZE_RESULTS
-from Constants import OD_COST_MATRIX_LAYER_NAME
-from Constants import OD_COST_MATRIX_LINES
-from Constants import ON_THE_NETWORK_OPTION
-from Constants import ORIGIN_ID_FIELD_NAME
-from Constants import ORIGINAL_FID
-from Constants import OUTPUT_FEATURE_CLASS
-from Constants import OUTPUT_FILE_NAME
-from Constants import OUTPUT_LOCATION
-from Constants import PARTIAL_ADJACENCY_LIST_NAME
-from Constants import POINT_CONVERSION_FINISHED
-from Constants import POINT_CONVERSION_STARTED
-from Constants import POINT_FEATURE_CLASS_NAME
-from Constants import POINT_LOCATION
-from Constants import POLYGONS_LAYER_NAME
-from Constants import POLYGONS_SHAPEFILE_NAME
-from Constants import RASTER_NAME
-from Constants import SEARCH_RADIUS
-from Constants import STEP_1_FAILED
-from Constants import STEP_1_FINISHED
-from Constants import STEP_1_STARTED
-from Constants import STEP_2
-from Constants import STEP_2_FAILED
-from Constants import STEP_2_FINISHED
-from Constants import STEP_2_STARTED
-from Constants import STEP_3
-from Constants import STEP_3_FAILED
-from Constants import STEP_3_FINISHED
-from Constants import STEP_3_STARTED
-from Constants import STEP_4_FAILED
-from Constants import STEP_4_FINISHED
-from Constants import STEP_4_STARTED
-from Constants import STEP_5
-from Constants import STEP_5_FAILED
-from Constants import STEP_5_FINISHED
-from Constants import STEP_5_STARTED
-from Constants import STEP_6_FAILED
-from Constants import STEP_6_FINISHED
-from Constants import STEP_6_STARTED
-from Constants import SUCCESS
-from Constants import SYMBOLOGY_DIR
-from Constants import USE_NETWORK_RADIUS
-from Constants import WARNING_APPLY_SYMBOLOGY_FAILED
-from Constants import WARNING_FAIL_TO_DISPLAY
-from Constants import WARNING_LARGE_ADJ_FILE_NAME
-from Constants import WARNING_NO_NODES
-from Constants import WARNING_OUTPUT_ALREADY_EXISTS
-from Constants import WARNING_POINTS_NOT_IN_GRAPH
-from Constants import WEIGHT
-from Node import Node
+from .Constants import ACCUMULATOR_ATTRIBUTES
+from .Constants import ADJACENCY_LIST_COMPUTED
+from .Constants import ADJACENCY_LIST_NAME
+from .Constants import AUXILIARY_DIR_NAME
+from .Constants import BETA
+from .Constants import COMPUTE_BETWEENNESS
+from .Constants import COMPUTE_CLOSENESS
+from .Constants import COMPUTE_GRAVITY
+from .Constants import COMPUTE_REACH
+from .Constants import COMPUTE_STRAIGHTNESS
+from .Constants import DESTINATION_ID_FIELD_NAME
+from .Constants import FAILURE
+from .Constants import feature_class_name
+from .Constants import FINAL_ATTRIBUTES
+from .Constants import get_symbology_layer_name
+from .Constants import ID_ATTRIBUTE
+from .Constants import IMPEDANCE_ATTRIBUTE
+from .Constants import index
+from .Constants import INFINITE_RADIUS
+from .Constants import INPUT_BUILDINGS
+from .Constants import INPUT_BUILDINGS_COPY_FAILED
+from .Constants import INPUT_BUILDINGS_COPY_FINISHED
+from .Constants import INPUT_BUILDINGS_COPY_STARTED
+from .Constants import INPUT_COUNT
+from .Constants import INPUT_NETWORK
+from .Constants import INPUT_POINTS
+from .Constants import INPUT_POINTS_LAYER_NAME
+from .Constants import layer_name
+from .Constants import LOCATION
+from .Constants import MAX_FILE_NAME_LENGTH
+from .Constants import METRICS
+from .Constants import NODE_WEIGHT_ATTRIBUTE
+from .Constants import NORMALIZE_RESULTS
+from .Constants import OD_COST_MATRIX_LAYER_NAME
+from .Constants import OD_COST_MATRIX_LINES
+from .Constants import ON_THE_NETWORK_OPTION
+from .Constants import ORIGIN_ID_FIELD_NAME
+from .Constants import ORIGINAL_FID
+from .Constants import OUTPUT_FEATURE_CLASS
+from .Constants import OUTPUT_FILE_NAME
+from .Constants import OUTPUT_LOCATION
+from .Constants import PARTIAL_ADJACENCY_LIST_NAME
+from .Constants import POINT_CONVERSION_FINISHED
+from .Constants import POINT_CONVERSION_STARTED
+from .Constants import POINT_FEATURE_CLASS_NAME
+from .Constants import POINT_LOCATION
+from .Constants import POLYGONS_LAYER_NAME
+from .Constants import POLYGONS_SHAPEFILE_NAME
+from .Constants import RASTER_NAME
+from .Constants import SEARCH_RADIUS
+from .Constants import STEP_1_FAILED
+from .Constants import STEP_1_FINISHED
+from .Constants import STEP_1_STARTED
+from .Constants import STEP_2
+from .Constants import STEP_2_FAILED
+from .Constants import STEP_2_FINISHED
+from .Constants import STEP_2_STARTED
+from .Constants import STEP_3
+from .Constants import STEP_3_FAILED
+from .Constants import STEP_3_FINISHED
+from .Constants import STEP_3_STARTED
+from .Constants import STEP_4_FAILED
+from .Constants import STEP_4_FINISHED
+from .Constants import STEP_4_STARTED
+from .Constants import STEP_5
+from .Constants import STEP_5_FAILED
+from .Constants import STEP_5_FINISHED
+from .Constants import STEP_5_STARTED
+from .Constants import STEP_6_FAILED
+from .Constants import STEP_6_FINISHED
+from .Constants import STEP_6_STARTED
+from .Constants import SUCCESS
+from .Constants import SYMBOLOGY_DIR
+from .Constants import USE_NETWORK_RADIUS
+from .Constants import WARNING_APPLY_SYMBOLOGY_FAILED
+from .Constants import WARNING_FAIL_TO_DISPLAY
+from .Constants import WARNING_LARGE_ADJ_FILE_NAME
+from .Constants import WARNING_NO_NODES
+from .Constants import WARNING_OUTPUT_ALREADY_EXISTS
+from .Constants import WARNING_POINTS_NOT_IN_GRAPH
+from .Constants import WEIGHT
+from .Node import Node
 from os.path import join
 from sys import argv
-from Utils import all_values_in_column
-from Utils import basename
-from Utils import calculate_network_locations
-from Utils import delete
-from Utils import Invalid_Input_Exception
-from Utils import is_accumulator_field
-from Utils import to_point_feature_class
-from Utils import trim
+from .Utils import all_values_in_column
+from .Utils import basename
+from .Utils import calculate_network_locations
+from .Utils import delete
+from .Utils import Invalid_Input_Exception
+from .Utils import is_accumulator_field
+from .Utils import to_point_feature_class
+from .Utils import trim
+
 
 def main():
   """
@@ -140,31 +141,31 @@ def main():
   if len(argv) != INPUT_COUNT + 1:
     raise Exception("Invalid number of inputs")
   input_number = index()
-  input_number.next() # Skip over sys.argv[0]
+  next(input_number) # Skip over sys.argv[0]
   inputs = {}
-  inputs[INPUT_BUILDINGS] = argv[input_number.next()]
-  inputs[POINT_LOCATION] = ("INSIDE" if argv[input_number.next()] == "true" else
+  inputs[INPUT_BUILDINGS] = argv[next(input_number)]
+  inputs[POINT_LOCATION] = ("INSIDE" if argv[next(input_number)] == "true" else
       "CENTROID")
-  inputs[INPUT_NETWORK] = argv[input_number.next()]
-  inputs[COMPUTE_REACH] = argv[input_number.next()] == "true"
-  inputs[COMPUTE_GRAVITY] = argv[input_number.next()] == "true"
-  inputs[COMPUTE_BETWEENNESS] = argv[input_number.next()] == "true"
-  inputs[COMPUTE_CLOSENESS] = argv[input_number.next()] == "true"
-  inputs[COMPUTE_STRAIGHTNESS] = argv[input_number.next()] == "true"
-  inputs[ID_ATTRIBUTE] = argv[input_number.next()]
-  inputs[NODE_WEIGHT_ATTRIBUTE] = argv[input_number.next()]
-  inputs[IMPEDANCE_ATTRIBUTE] = argv[input_number.next()]
-  try: inputs[SEARCH_RADIUS] = float(argv[input_number.next()])
+  inputs[INPUT_NETWORK] = argv[next(input_number)]
+  inputs[COMPUTE_REACH] = argv[next(input_number)] == "true"
+  inputs[COMPUTE_GRAVITY] = argv[next(input_number)] == "true"
+  inputs[COMPUTE_BETWEENNESS] = argv[next(input_number)] == "true"
+  inputs[COMPUTE_CLOSENESS] = argv[next(input_number)] == "true"
+  inputs[COMPUTE_STRAIGHTNESS] = argv[next(input_number)] == "true"
+  inputs[ID_ATTRIBUTE] = argv[next(input_number)]
+  inputs[NODE_WEIGHT_ATTRIBUTE] = argv[next(input_number)]
+  inputs[IMPEDANCE_ATTRIBUTE] = argv[next(input_number)]
+  try: inputs[SEARCH_RADIUS] = float(argv[next(input_number)])
   except: inputs[SEARCH_RADIUS] = INFINITE_RADIUS
-  inputs[USE_NETWORK_RADIUS] = (argv[input_number.next()] ==
+  inputs[USE_NETWORK_RADIUS] = (argv[next(input_number)] ==
       ON_THE_NETWORK_OPTION)
-  try: inputs[BETA] = float(argv[input_number.next()])
+  try: inputs[BETA] = float(argv[next(input_number)])
   except: raise Invalid_Input_Exception("Beta")
   inputs[NORMALIZE_RESULTS] = [measure for measure in
-      argv[input_number.next()].split(";") if measure != "#"]
-  inputs[OUTPUT_LOCATION] = argv[input_number.next()]
-  inputs[OUTPUT_FILE_NAME] = argv[input_number.next()]
-  inputs[ACCUMULATOR_ATTRIBUTES] = argv[input_number.next()]
+      argv[next(input_number)].split(";") if measure != "#"]
+  inputs[OUTPUT_LOCATION] = argv[next(input_number)]
+  inputs[OUTPUT_FILE_NAME] = argv[next(input_number)]
+  inputs[ACCUMULATOR_ATTRIBUTES] = argv[next(input_number)]
 
   # Record the origin nodes for centrality measurements
   # This is important if the user selects a subset of the features to be origins
@@ -234,7 +235,7 @@ def main():
   # Find the appropriate symbology layer
   for metric_index in range(len(METRICS)):
       if inputs[COMPUTE_REACH + metric_index]:
-          first_metric = METRICS[metric_index]
+          0 = METRICS[metric_index]
           break
   symbology_layer_name = get_symbology_layer_name(
       buildings_description.shapeType, first_metric)

@@ -6,11 +6,12 @@ __author__ = 'raul_kalvo, mikemeko'
 __date__ = 'May 4, 2013'
 
 from arcpy import AddMessage
-from Dijkstra import find_shortest_path
-from Utils import edge_building_weight_sum
+from .Dijkstra import find_shortest_path
+from .Utils import edge_building_weight_sum
+
 
 def find_redundancy_index(network, points, edge_to_points, coeff, origin_id,
-    destination_id, search_radius, weights_available):
+                          destination_id, search_radius, weights_available):
   """
   Returns the redundancy index and unique segments for the given pair of points
       |origin_id| and |destination_id|. |network| is the csNetwork in which the
@@ -23,13 +24,13 @@ def find_redundancy_index(network, points, edge_to_points, coeff, origin_id,
       |search_radius| or there is no network path between the two points.
   """
   # print current OD pair
-  AddMessage("O=%s D=%s" % (origin_id, destination_id))
+  AddMessage(f"O={origin_id} D={destination_id}")
   # add origin and destination pseudo nodes to network
   o_point = points[origin_id]
   network.addPseudoNode(o_point.tValue, o_point.Segment, "O", o_point.Point)
   d_point = points[destination_id]
   network.addPseudoNode(d_point.tValue, d_point.Segment, "D", d_point.Point)
-  # find shortest path distance between origin and destination
+  # find the shortest path distance between origin and destination
   search_result = find_shortest_path(network, "O", "D")
   if search_result is None:
     AddMessage("No path found")
@@ -43,28 +44,29 @@ def find_redundancy_index(network, points, edge_to_points, coeff, origin_id,
     return None
   # compute unique segments
   unique_segments = _redundant_unique_segments(network,
-      shortest_path_dist * coeff)
+                                               shortest_path_dist * coeff)
   # compute redundancy
   # TODO(mikemeko, raul_kalvo): think of better ideas for what to do when
   #     redundancy index denominator is 0
   if weights_available:
     shortest_path_weight_sum = sum(edge_building_weight_sum(network,
-        edge_to_points, edge_id) for edge_id in shortest_path)
+                                                            edge_to_points, edge_id) for edge_id in shortest_path)
     unique_segments_weight_sum = sum(edge_building_weight_sum(network,
-        edge_to_points, edge_id) for edge_id in unique_segments)
+                                                              edge_to_points, edge_id) for edge_id in unique_segments)
     redundancy = (unique_segments_weight_sum / shortest_path_weight_sum if
-        shortest_path_weight_sum > 0 else 1)
+                  shortest_path_weight_sum > 0 else 1)
   else:
     unique_segments_total_dist = sum(network.Edges[edge_id].Length for
-        edge_id in unique_segments)
+                                     edge_id in unique_segments)
     redundancy = (unique_segments_total_dist / shortest_path_dist if
-        shortest_path_dist > 0 else 1)
+                  shortest_path_dist > 0 else 1)
   # compute unique network segments
   unique_network_segments = set(map(network.originalEdge, unique_segments))
   # result
-  AddMessage("Redundancy=%.5f" % (redundancy))
+  AddMessage(f"Redundancy={redundancy:.5f}")
   network.clearPsudoNodes()
   return redundancy, unique_network_segments
+
 
 def _redundant_unique_segments(network, dist_quota):
   """
@@ -85,6 +87,7 @@ def _redundant_unique_segments(network, dist_quota):
   # track successful and unsuccessful segments
   valid_segments = set()
   invalid_segments = set()
+
   def _validate_path(parent, node):
     """
     Validates all the eges from the root of |parent| to the given |node|.

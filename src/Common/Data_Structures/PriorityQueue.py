@@ -9,6 +9,7 @@ from heapq import heapify
 from heapq import heappop
 from heapq import heappush
 
+
 class PriorityQueue:
   """
   A Priority Queue data structure that supports push, pop, contains, and remove.
@@ -27,11 +28,13 @@ class PriorityQueue:
       self._items.add(item)
     self._data = data
     self._heapify()
+
   def _heapify(self):
     """
     Restructures the list of items for efficient push and pop.
     """
     heapify(self._data)
+
   def push(self, item, cost):
     """
     Pushes the given |item| with the given |cost| to the list of items. The
@@ -40,6 +43,7 @@ class PriorityQueue:
     assert item not in self._items
     self._items.add(item)
     heappush(self._data, (cost, item))
+
   def pop(self):
     """
     Pops and returns the item with the minimum cost. Returns None if there are
@@ -50,11 +54,13 @@ class PriorityQueue:
     cost, item = heappop(self._data)
     self._items.remove(item)
     return item
+
   def contains(self, item):
     """
     Returns True if |item| is in the list of items, False otherwise.
     """
     return item in self._items
+
   def remove(self, item, cost=None):
     """
     Removes the given |item| from the list of items. |item| must currently be in
@@ -72,5 +78,6 @@ class PriorityQueue:
     self._data.remove((cost, item))
     self._items.remove(item)
     self._heapify()
+
   def __len__(self):
     return len(self._data)

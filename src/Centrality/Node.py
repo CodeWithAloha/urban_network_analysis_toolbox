@@ -11,8 +11,9 @@
 Script for representation of a weighted, undirected graph.
 """
 
-from Constants import NEIGHBORS
-from Constants import WEIGHT
+from .Constants import NEIGHBORS
+from .Constants import WEIGHT
+
 
 class Node:
   """
@@ -26,12 +27,14 @@ class Node:
     # Weight of the node
     setattr(self, WEIGHT, 1.0)
 
-  def add_neighbor(self, neighbor_id, edge_weight=1.0, accumulation_weights={}):
+  def add_neighbor(self, neighbor_id, edge_weight=1.0, accumulation_weights=None):
     """
     Add a neighbor to this node
     |neighbor_id|: id of the neighboring node
     |edge_weight|: weight of the edge connecting the two nodes
     |accumulation_weights|: weight of the edge based on other metrics
     """
+    if accumulation_weights is None:
+      accumulation_weights = {}
     getattr(self, NEIGHBORS).add((neighbor_id, edge_weight,
-        tuple(accumulation_weights.items())))
+                                  tuple(accumulation_weights.items())))
