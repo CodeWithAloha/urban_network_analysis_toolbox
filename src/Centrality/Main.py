@@ -142,19 +142,14 @@ def main():
     raise Exception("Invalid number of inputs")
   input_number = index()
   next(input_number) # Skip over sys.argv[0]
-  inputs = {}
-  inputs[INPUT_BUILDINGS] = argv[next(input_number)]
-  inputs[POINT_LOCATION] = ("INSIDE" if argv[next(input_number)] == "true" else
-      "CENTROID")
-  inputs[INPUT_NETWORK] = argv[next(input_number)]
-  inputs[COMPUTE_REACH] = argv[next(input_number)] == "true"
-  inputs[COMPUTE_GRAVITY] = argv[next(input_number)] == "true"
-  inputs[COMPUTE_BETWEENNESS] = argv[next(input_number)] == "true"
-  inputs[COMPUTE_CLOSENESS] = argv[next(input_number)] == "true"
-  inputs[COMPUTE_STRAIGHTNESS] = argv[next(input_number)] == "true"
-  inputs[ID_ATTRIBUTE] = argv[next(input_number)]
-  inputs[NODE_WEIGHT_ATTRIBUTE] = argv[next(input_number)]
-  inputs[IMPEDANCE_ATTRIBUTE] = argv[next(input_number)]
+  inputs = {INPUT_BUILDINGS: argv[next(input_number)],
+            POINT_LOCATION: ("INSIDE" if argv[next(input_number)] == "true" else
+                             "CENTROID"), INPUT_NETWORK: argv[next(input_number)],
+            COMPUTE_REACH: argv[next(input_number)] == "true", COMPUTE_GRAVITY: argv[next(input_number)] == "true",
+            COMPUTE_BETWEENNESS: argv[next(input_number)] == "true",
+            COMPUTE_CLOSENESS: argv[next(input_number)] == "true",
+            COMPUTE_STRAIGHTNESS: argv[next(input_number)] == "true", ID_ATTRIBUTE: argv[next(input_number)],
+            NODE_WEIGHT_ATTRIBUTE: argv[next(input_number)], IMPEDANCE_ATTRIBUTE: argv[next(input_number)]}
   try: inputs[SEARCH_RADIUS] = float(argv[next(input_number)])
   except: inputs[SEARCH_RADIUS] = INFINITE_RADIUS
   inputs[USE_NETWORK_RADIUS] = (argv[next(input_number)] ==
@@ -181,18 +176,19 @@ def main():
   # Adjacency List table name
   node_locations_needed = (inputs[COMPUTE_STRAIGHTNESS] or
       not inputs[USE_NETWORK_RADIUS])
-  adj_dbf_name = ("%s_%s_%s_%s_%s_%s.dbf" % (ADJACENCY_LIST_NAME,
-      basename(inputs[INPUT_BUILDINGS]), basename(inputs[INPUT_NETWORK]),
-      inputs[ID_ATTRIBUTE], inputs[IMPEDANCE_ATTRIBUTE],
-      inputs[ACCUMULATOR_ATTRIBUTES])).replace("#", "None")
+  adj_dbf_name = (f"{ADJACENCY_LIST_NAME}_"
+                  f"{basename(inputs[INPUT_BUILDINGS])}_"
+                  f"{basename(inputs[INPUT_NETWORK])}_"
+                  f"{inputs[ID_ATTRIBUTE]}_"
+                  f"{inputs[IMPEDANCE_ATTRIBUTE],}_"
+                  f"{inputs[ACCUMULATOR_ATTRIBUTES]}.dbf" ).replace("#", "None")
   if len(adj_dbf_name) > MAX_FILE_NAME_LENGTH:
     AddWarning(WARNING_LARGE_ADJ_FILE_NAME)
   adj_dbf = join(inputs[OUTPUT_LOCATION], adj_dbf_name)
 
   # Output file names
   output_feature_class_name = feature_class_name(inputs[OUTPUT_FILE_NAME])
-  output_feature_class = "%s.shp" % join(inputs[OUTPUT_LOCATION],
-      output_feature_class_name)
+  output_feature_class = f"{join(inputs[OUTPUT_LOCATION], output_feature_class_name)}.shp"
   # Create a feature class that is a copy of the input buildings
   try:
     AddMessage(INPUT_BUILDINGS_COPY_STARTED)
@@ -206,7 +202,7 @@ def main():
     AddMessage(INPUT_BUILDINGS_COPY_FAILED)
     success = False
   output_layer_name = layer_name(inputs[OUTPUT_FILE_NAME])
-  output_layer = "%s.lyr" % join(inputs[OUTPUT_LOCATION], output_layer_name)
+  output_layer = f"{join(inputs[OUTPUT_LOCATION], output_layer_name)}.lyr"
 
   # If output has already been created, don't carry on
   if Exists(output_layer):
@@ -222,8 +218,7 @@ def main():
     # Input buildings need to be converted to point feature class
     point_feature_class_name = POINT_FEATURE_CLASS_NAME(
         basename(output_feature_class), inputs[POINT_LOCATION])
-    inputs[INPUT_POINTS] = "%s.shp" % join(inputs[OUTPUT_LOCATION],
-        point_feature_class_name)
+    inputs[INPUT_POINTS] = f"{join(inputs[OUTPUT_LOCATION], point_feature_class_name)}.shp"
     # If FID is used as ID attribute, we need to change it since a point
     #     shapefile will be in use
     if inputs[ID_ATTRIBUTE] == "FID":
@@ -248,7 +243,7 @@ def main():
     auxiliary_dir = join(inputs[OUTPUT_LOCATION], AUXILIARY_DIR_NAME)
     od_cost_matrix_layer = join(auxiliary_dir, OD_COST_MATRIX_LAYER_NAME)
     od_cost_matrix_lines = join(auxiliary_dir, OD_COST_MATRIX_LINES)
-    temp_adj_dbf_name = "%s~.dbf" % adj_dbf_name[-4]
+    temp_adj_dbf_name = f"{adj_dbf_name[-4]}~.dbf"
     temp_adj_dbf = join(inputs[OUTPUT_LOCATION], temp_adj_dbf_name)
     partial_adj_dbf = join(auxiliary_dir, PARTIAL_ADJACENCY_LIST_NAME)
     polygons = join(auxiliary_dir, POLYGONS_SHAPEFILE_NAME)
@@ -295,8 +290,8 @@ def main():
     if success:
       AddMessage(STEP_2_STARTED)
       try:
-        distance_field = trim("Total_%s" % inputs[IMPEDANCE_ATTRIBUTE])
-        accumulator_fields = set([trim("Total_%s" % accumulator_attribute)
+        distance_field = trim(f"Total_{inputs[IMPEDANCE_ATTRIBUTE]}")
+        accumulator_fields = set([trim(f"Total_{accumulator_attribute}")
             for accumulator_attribute in inputs[ACCUMULATOR_ATTRIBUTES].split(
             ";") if accumulator_attribute != "#"])
         # Graph representation: dictionary mapping node id's to Node objects
@@ -311,9 +306,9 @@ def main():
           destination_id = row.getValue(trim(DESTINATION_ID_FIELD_NAME))
           distance = float(row.getValue(distance_field))
           # Make sure the nodes are recorded in the graph
-          for id in [origin_id, destination_id]:
-            if not id in nodes:
-              nodes[id] = Node()
+          for row_id in [origin_id, destination_id]:
+            if not row_id in nodes:
+              nodes[row_id] = Node()
           # Make sure that the nodes are neighbors in the graph
           if origin_id != destination_id and distance >= 0:
             accumulations = {}
@@ -347,17 +342,17 @@ def main():
         node_attribute_progress = Progress_Bar(input_point_count, 1, STEP_3)
         rows = UpdateCursor(inputs[INPUT_POINTS])
         for row in rows:
-          id = row.getValue(inputs[ID_ATTRIBUTE])
-          if not id in nodes:
+          row_id = row.getValue(inputs[ID_ATTRIBUTE])
+          if not row_id in nodes:
             point_not_in_graph_count += 1
             continue
           if get_weights:
-            setattr(nodes[id], WEIGHT,
+            setattr(nodes[row_id], WEIGHT,
                 row.getValue(trim(inputs[NODE_WEIGHT_ATTRIBUTE])))
           if get_locations:
             snap_x = row.getValue(trim("SnapX"))
             snap_y = row.getValue(trim("SnapY"))
-            setattr(nodes[id], LOCATION, (snap_x, snap_y))
+            setattr(nodes[row_id], LOCATION, (snap_x, snap_y))
           node_attribute_progress.step()
         if point_not_in_graph_count:
           AddWarning(WARNING_POINTS_NOT_IN_GRAPH(N,
@@ -416,12 +411,12 @@ def main():
         write_progress = Progress_Bar(N, 1, STEP_5)
         layer_rows = UpdateCursor(output_layer)
         for row in layer_rows:
-            id = row.getValue(id_field)
+            row_id = row.getValue(id_field)
             for measure in measures:
               # If no value was computed for this node id, set value to 0
               value = 0
-              if id in nodes and hasattr(nodes[id], measure):
-                value = getattr(nodes[id], measure)
+              if row_id in nodes and hasattr(nodes[row_id], measure):
+                value = getattr(nodes[row_id], measure)
               row.setValue(trim(measure), value)
             layer_rows.updateRow(row)
             write_progress.step()

@@ -38,8 +38,7 @@ def find_redundancy_index(network, points, edge_to_points, coeff, origin_id,
     return None
   shortest_path, shortest_path_dist = search_result
   if shortest_path_dist > search_radius:
-    AddMessage("Shortest path distance <%s> larger than search radius <%s>" % (
-        shortest_path_dist, search_radius))
+    AddMessage(f"Shortest path distance <{shortest_path_dist}> larger than search radius <{search_radius}>")
     network.clearPsudoNodes()
     return None
   # compute unique segments

@@ -124,14 +124,13 @@ class csNetwork(object):
         AddMessage("")
         AddMessage("printEdges:")
         AddMessage("")
-        AddMessage("%6s %10s %10s \t%s" % ('ID', 'Length', 'tag', 'Nodes'))
+        AddMessage(f"{'ID':>6} {'Length':>10} {'tag':>10} \t{'Nodes'}")
         AddMessage("")
         for e in self.E:
             tag = ""
             if self.E[e].Hidden:
                 tag = "hidden"
-            AddMessage("%6s %10.2f %10s \t%s" % (e, self.E[e].Length, tag,
-                                                 self.E[e].Nodes))
+            AddMessage(f"{e:>6} {self.E[e].Length:10.2f} {tag:>10} \t{self.E[e].Nodes}")
 
     def edgeIDbyNodes(self, node1, node2):
         for e1 in self.N[node1].Edges:
@@ -149,8 +148,8 @@ class csNetwork(object):
         output_table = []
         for k in self.E:
             e = self.E[k]
-            s1 = "%s \t %s \t %s \t %s" % (e.Start, e.End, e.Length, k)
-            s2 = "%s \t %s \t %s \t %s" % (e.End, e.Start, e.Length, k)
+            s1 = f"{e.Start} \t {e.End} \t {e.Length} \t {k}"
+            s2 = f"{e.End} \t {e.Start} \t {e.Length} \t {k}"
             AddMessage(s1)
             AddMessage(s2)
             output_table.append(s1)
@@ -264,7 +263,7 @@ class csNetwork(object):
             node.addEdge(edge_index_start_to_new_point)
             node.addEdge(edge_index_new_point_to_end)
             node.TValue = t_value
-            node.OriginalEdge = edge_id
+            node.e = edge_id
             if point is not None:
                 node.Point = point
             self.N[name] = node
@@ -306,7 +305,7 @@ class csNetwork(object):
             node.addEdge(edge_index_start_to_new_point)
             node.addEdge(edge_index_new_point_to_end)
             node.TValue = t_value
-            node.OriginalEdge = edge_id
+            node.e = edge_id
             if point is not None:
                 node.Point = point
             self.N[name] = node

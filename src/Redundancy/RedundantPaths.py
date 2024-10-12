@@ -25,7 +25,7 @@ def find_all_paths(network, points, coeff, origin_id, destination_id,
       the two points.
   """
   # print current OD pair
-  AddMessage("O=%s D=%s" % (origin_id, destination_id))
+  AddMessage(f"O={origin_id} D={destination_id}")
   # add origin and destination pseudo nodes to network
   o_point = points[origin_id]
   network.addPseudoNode(o_point.tValue, o_point.Segment, "O", o_point.Point)
@@ -39,8 +39,7 @@ def find_all_paths(network, points, coeff, origin_id, destination_id,
     return None
   shortest_path, shortest_path_dist = search_result
   if shortest_path_dist > search_radius:
-    AddMessage("Shortest path distance <%s> larger than search radius <%s>" % (
-      shortest_path_dist, search_radius))
+    AddMessage(f"Shortest path distance <{shortest_path_dist}> larger than search radius <{search_radius}>")
     network.clearPsudoNodes()
     return None
   available_dist = shortest_path_dist * coeff
@@ -68,9 +67,9 @@ def find_all_paths(network, points, coeff, origin_id, destination_id,
   redundancy = (unique_segments_total_dist / shortest_path_dist if
                 shortest_path_dist > 0 else 1)
   # result
-  results = ["Number of paths=%d" % len(paths), "Redundancy=%.5f" % redundancy]
+  results = [f"Number of paths={len(paths)}", f"Redundancy={redundancy:.5f}"]
   if compute_wayfinding:
-    results.append("Wayfinding=%.5f" % wayfinding)
+    results.append(f"Wayfinding={wayfinding:.5f}")
   AddMessage(", ".join(results))
   network.clearPsudoNodes()
   output = [path_points, unique_network_segment_counts, len(paths), redundancy]

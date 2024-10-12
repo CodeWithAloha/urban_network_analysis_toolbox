@@ -156,8 +156,8 @@ def flagged_points(input_points, field):
       If |field| is invalid, ids of all points are returned.
   """
   if field in fields(input_points):
-    return [int(oid) for oid, flag in SearchCursor(input_points, ["OID@",
-        field]) if is_number(flag) and float(flag) > 0]
+    return [int(oid) for oid, flag in SearchCursor(input_points,
+                                                   ["OID@", field]) if is_number(flag) and float(flag) > 0]
   else:
     return [int(oid) for oid, in SearchCursor(input_points, ["OID@"])]
 
@@ -181,7 +181,7 @@ def write_rows_to_csv(rows, output_dir, output_name):
   """
   Writes the given |rows| of data to a cvs file in the given location.
   """
-  file_name = "%s.csv" % join(output_dir, output_name)
+  file_name = f"{join(output_dir, output_name)}.csv"
   c = writer(open(file_name, "wb"))
   c.writerows(rows)
   RefreshCatalog(file_name)
@@ -209,11 +209,11 @@ def select_edges_from_network(network, edges, directory, name):
   """
   network_edges = getEdgePathFromNetwork(network)
   id_name = ("FID" if Describe(network_edges).extension == "shp" else
-      "OBJECTID")
-  query = ' OR '.join(['"%s" = %d' % (id_name, edge_id) for edge_id in edges])
-  selected_edges = "%s.shp" % join(directory, name)
+             "OBJECTID")
+  query = ' OR '.join([f'"{id_name}" = {edge_id}' for edge_id in edges])
+  selected_edges = f"{join(directory, name)}.shp"
   Select_analysis(network_edges, selected_edges, query)
-  edges_layer = "%s.lyr" % join(directory, name)
+  edges_layer = f"{join(directory, name)}.lyr"
   MakeFeatureLayer_management(in_features=selected_edges, out_layer=name)
   SaveToLayerFile_management(name, edges_layer, "ABSOLUTE")
   ApplySymbologyFromLayer_management(edges_layer,

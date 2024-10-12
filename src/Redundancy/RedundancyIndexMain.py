@@ -46,12 +46,12 @@ def main():
 
     # check that network has "Length" attribute
     if "Length" not in network_cost_attributes(INPUT_NETWORK):
-      AddError("Network <%s> does not have Length attribute" % INPUT_NETWORK)
+      AddError(f"Network <{INPUT_NETWORK}> does not have Length attribute")
       return
 
     # check that coeff is at least 1
     if INPUT_COEFF < 1:
-      AddError("Redundancy coefficient <%s> must be at least 1" % INPUT_COEFF)
+      AddError(f"Redundancy coefficient <{INPUT_COEFF}> must be at least 1")
       return
 
     # if we are given a building weights field, check that it is valid
@@ -59,8 +59,8 @@ def main():
       INPUT_BUILDING_WEIGHTS_FIELD = ""
     if INPUT_BUILDING_WEIGHTS_FIELD and (INPUT_BUILDING_WEIGHTS_FIELD not in
                                          fields(INPUT_POINTS)):
-      AddError("Building weights field <%s> is not a valid attribute in the "
-               "input points <%s>" % (INPUT_BUILDING_WEIGHTS_FIELD, INPUT_POINTS))
+      AddError(f"Building weights field <{INPUT_BUILDING_WEIGHTS_FIELD}> is not a valid " + \
+               f"attribute in the input points <{INPUT_POINTS}>")
       return
 
     # setup
@@ -69,8 +69,7 @@ def main():
     # copy the input points into an output feature class
     AddMessage("Copying input points to output feature class ...")
     input_points_layer = Layer(INPUT_POINTS)
-    output_feature_class = "%s.shp" % join(INPUT_OUTPUT_DIRECTORY,
-                                           INPUT_OUTPUT_FEATURE_CLASS_NAME)
+    output_feature_class = f"{join(INPUT_OUTPUT_DIRECTORY, INPUT_OUTPUT_FEATURE_CLASS_NAME)}.shp"
     CopyFeatures_management(in_features=input_points_layer,
                             out_feature_class=output_feature_class)
     AddMessage("\tDone.")
@@ -95,7 +94,7 @@ def main():
     for origin_id in origin_ids:
       progress_bar = Progress_Bar(len(destination_ids),
                                   1,
-                                  "Computing index for O=%s ..." % origin_id)
+                                  f"Computing index for O={origin_id} ...")
       # statistics variables
       tot_redundancy_index = 0
       tot_squared_redundancy_index = 0
@@ -167,8 +166,7 @@ def main():
       else:
         rows.deleteRow()
     # create a layer of the output feature class, for symbology purposes
-    output_layer = "%s.lyr" % join(INPUT_OUTPUT_DIRECTORY,
-                                   INPUT_OUTPUT_FEATURE_CLASS_NAME)
+    output_layer = f"{join(INPUT_OUTPUT_DIRECTORY, INPUT_OUTPUT_FEATURE_CLASS_NAME)}.lyr"
     MakeFeatureLayer_management(in_features=output_feature_class,
                                 out_layer=INPUT_OUTPUT_FEATURE_CLASS_NAME)
     SaveToLayerFile_management(INPUT_OUTPUT_FEATURE_CLASS_NAME,

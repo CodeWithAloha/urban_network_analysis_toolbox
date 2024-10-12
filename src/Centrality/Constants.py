@@ -135,22 +135,22 @@ ADDING_BARRIERS_STARTED = ("... [started] Adding barriers to OD cost matrix "
                            "layer")
 ADDING_BARRIERS_FINISHED = "... [finished]"
 
-STEP_1_STARTED = "[1 started] %s" % STEP_1
+STEP_1_STARTED = f"[1 started] {STEP_1}"
 STEP_1_FAILED = "[1 failed] "
 STEP_1_FINISHED = "[1 finished]"
-STEP_2_STARTED = "[2 started] %s" % STEP_2
+STEP_2_STARTED = f"[2 started] {STEP_2}"
 STEP_2_FAILED = "[2 failed]"
 STEP_2_FINISHED = "[2 finished]"
-STEP_3_STARTED = "[3 started] %s" % STEP_3
+STEP_3_STARTED = f"[3 started] {STEP_3}"
 STEP_3_FAILED = "[3 failed]"
 STEP_3_FINISHED = "[3 finished]"
-STEP_4_STARTED = "[4 started] %s" % STEP_4
+STEP_4_STARTED = f"[4 started] {STEP_4}"
 STEP_4_FAILED = "[4 failed]"
 STEP_4_FINISHED = "[4 finished]"
-STEP_5_STARTED = "[5 started] %s" % STEP_5
+STEP_5_STARTED = f"[5 started] {STEP_5}"
 STEP_5_FAILED = "[5 failed]"
 STEP_5_FINISHED = "[5 finished]"
-STEP_6_STARTED = "[6 started] %s" % STEP_6
+STEP_6_STARTED = f"[6 started] {STEP_6}"
 STEP_6_FAILED = "[6 failed]"
 STEP_6_FINISHED = "[6 finished]"
 

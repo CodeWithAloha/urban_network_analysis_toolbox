@@ -253,10 +253,10 @@ def compute_adjacency_list(input_points, input_network, id_attribute,
                                 expression_type="PYTHON")
 
     # Record actual distance between neighboring nodes
-    distance_field = "Total_%s" % impedance_attribute
+    distance_field = f"Total_{impedance_attribute}"
     CalculateField_management(in_table=od_cost_matrix_lines,
                               field=distance_field,
-                              expression="!%s! - 2 * %d" % (distance_field, BARRIER_COST),
+                              expression=f"!{distance_field}! - 2 * {BARRIER_COST}",
                               expression_type="PYTHON")
 
     # Append result to |temp_adj_dbf|
