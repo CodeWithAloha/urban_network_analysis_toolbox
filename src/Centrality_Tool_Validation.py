@@ -141,7 +141,7 @@ class ToolValidator:
         impedance = self.inputs["impedance_attribute"]
         accumulators = self.inputs["accumulator_attributes"]
         description = Describe(network.value)
-        defalut_cost_attribute = ""
+        default_cost_attribute = ""
         cost_attributes = []
         for attribute in description.attributes:
             if attribute.usageType == "Cost":
