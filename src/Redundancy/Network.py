@@ -130,7 +130,8 @@ class csNetwork(object):
             tag = ""
             if self.E[e].Hidden:
                 tag = "hidden"
-            AddMessage(f"{e:>6} {self.E[e].Length:10.2f} {tag:>10} \t{self.E[e].Nodes}")
+            AddMessage(
+                f"{e:>6} {self.E[e].Length:10.2f} {tag:>10} \t{self.E[e].Nodes}")
 
     def edgeIDbyNodes(self, node1, node2):
         for e1 in self.N[node1].Edges:
@@ -476,8 +477,8 @@ class csNode(object):
         """
         d = sqrt((point[0] - self.p[0]) * (point[0] - self.p[0]) + (point[1] -
                                                                     self.p[1]) * (point[1] - self.p[1]) + (
-                         point[2] - self.p[2]) * (
-                         point[2] - self.p[2]))
+            point[2] - self.p[2]) * (
+            point[2] - self.p[2]))
         return d
 
     # Properties

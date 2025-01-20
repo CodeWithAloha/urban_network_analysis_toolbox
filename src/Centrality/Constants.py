@@ -29,10 +29,10 @@ STEP_6 = "Displaying results"
 # Inputs to the tool
 # Denote each input by its index
 def index():
-  i = 0
-  while True:
-    yield i
-    i += 1
+    i = 0
+    while True:
+        yield i
+        i += 1
 
 
 input_number = index()
@@ -95,15 +95,15 @@ WARNING_OUTPUT_ALREADY_EXISTS = "Output with the same name already exists"
 
 
 def WARNING_NO_EDGE_FEATURE(input_network):
-  return f"{input_network} does not have edge feature"
+    return f"{input_network} does not have edge feature"
 
 
 def WARNING_NO_JUNCTION_FEATURE(input_network):
-  return f"{input_network} does not have junction feature"
+    return f"{input_network} does not have junction feature"
 
 
 def WARNING_POINTS_NOT_IN_GRAPH(in_graph, not_in_graph):
-  return f"{not_in_graph} out of {in_graph + not_in_graph} input points not recorded in graph"
+    return f"{not_in_graph} out of {in_graph + not_in_graph} input points not recorded in graph"
 
 
 WARNING_NO_NODES = "No nodes in graph"
@@ -203,15 +203,15 @@ DESTINATION_ID_FIELD_NAME = "DestinationID"
 
 # File names
 def feature_class_name(base):
-  return f"{base}_Featureclass"
+    return f"{base}_Featureclass"
 
 
 def layer_name(base):
-  return f"{base}_Layer"
+    return f"{base}_Layer"
 
 
 def get_symbology_layer_name(shape_type, first_metric):
-  return f"{shape_type}_{first_metric}_Symbology_Layer.lyr"
+    return f"{shape_type}_{first_metric}_Symbology_Layer.lyr"
 
 
 SYMBOLOGY_DIR_NAME = "Symbology_Layers"
@@ -223,7 +223,7 @@ OD_COST_MATRIX_LINES = "Lines"
 
 
 def TEMP_ADJACENCY_DBF_NAME(adj_dbf_name):
-  return f"Temp_{adj_dbf_name}"
+    return f"Temp_{adj_dbf_name}"
 
 
 POLYGONS_SHAPEFILE_NAME = "Polygons.shp"
