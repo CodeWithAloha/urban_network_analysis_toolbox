@@ -234,7 +234,7 @@ def main():
     # Find the appropriate symbology layer
     for metric_index in range(len(METRICS)):
         if inputs[COMPUTE_REACH + metric_index]:
-            0 = METRICS[metric_index]
+            first_metric = METRICS[metric_index]
             break
     symbology_layer_name = get_symbology_layer_name(
         buildings_description.shapeType, first_metric)

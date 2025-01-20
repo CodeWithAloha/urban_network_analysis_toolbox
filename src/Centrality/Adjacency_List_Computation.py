@@ -235,7 +235,7 @@ def compute_adjacency_list(input_points, input_network, id_attribute,
         # Select the current polygon
         SelectLayerByAttribute_management(in_layer_or_view=polygons_layer,
                                           selection_type="NEW_SELECTION",
-                                          where_clause="FID = {str(row.FID)}")
+                                          where_clause=f"FID = {str(row.FID)}")
 
         # Origins
         SelectLayerByLocation_management(in_layer=input_points_layer,
