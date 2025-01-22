@@ -25,7 +25,8 @@ from arcpy import Exists
 from arcpy import GetCount_management
 from arcpy import GetMessages
 from arcpy import MakeFeatureLayer_management
-from arcpy import mapping
+# from arcpy import mapping
+from arcpy import mp
 from arcpy import SaveToLayerFile_management
 from arcpy import SelectLayerByAttribute_management
 from arcpy import SetParameterAsText
@@ -448,11 +449,15 @@ def main():
                 AddMessage(STEP_6_FAILED)
             # Display
             try:
-                current_map_document = mapping.MapDocument("CURRENT")
-                data_frame = mapping.ListDataFrames(current_map_document,
-                                                    "Layers")[0]
-                add_layer = mapping.Layer(output_layer)
-                mapping.AddLayer(data_frame, add_layer, "AUTO_ARRANGE")
+                # current_map_document = mapping.MapDocument("CURRENT")
+                # data_frame = mapping.ListDataFrames(current_map_document,
+                #                                     "Layers")[0]
+                # add_layer = mapping.Layer(output_layer)
+                # mapping.AddLayer(data_frame, add_layer, "AUTO_ARRANGE")
+
+                aprx = mp.ArcGISProject("CURRENT")
+                active_map = aprx.activeMap
+                active_map.addLayer(output_layer, "AUTO_ARRANGE")
                 AddMessage(STEP_6_FINISHED)
             except:
                 AddWarning(WARNING_FAIL_TO_DISPLAY)

@@ -13,32 +13,32 @@ Script for the computation of the five centrality metrics.
 
 from arcpy import AddWarning
 from Common.Utils.Progress_Bar import Progress_Bar
-from Constants import BETWEENNESS
-from Constants import CLOSENESS
-from Constants import GRAVITY
-from Constants import LOCATION
-from Constants import NEIGHBORS
-from Constants import NORM_BETWEENNESS
-from Constants import NORM_CLOSENESS
-from Constants import NORM_GRAVITY
-from Constants import NORM_REACH
-from Constants import NORM_STRAIGHTNESS
-from Constants import PROGRESS_NORMALIZATION
-from Constants import REACH
-from Constants import STEP_4
-from Constants import STRAIGHTNESS
-from Constants import WARNING_NO_BETWEENNESS_NORMALIZATION
-from Constants import WEIGHT
+from .Constants import BETWEENNESS
+from .Constants import CLOSENESS
+from .Constants import GRAVITY
+from .Constants import LOCATION
+from .Constants import NEIGHBORS
+from .Constants import NORM_BETWEENNESS
+from .Constants import NORM_CLOSENESS
+from .Constants import NORM_GRAVITY
+from .Constants import NORM_REACH
+from .Constants import NORM_STRAIGHTNESS
+from .Constants import PROGRESS_NORMALIZATION
+from .Constants import REACH
+from .Constants import STEP_4
+from .Constants import STRAIGHTNESS
+from .Constants import WARNING_NO_BETWEENNESS_NORMALIZATION
+from .Constants import WEIGHT
 from heapq import heapify
 from heapq import heappop
 from heapq import heappush
 from math import exp
 from operator import add
-from Utils import dist
-from Utils import eq_tol
-from Utils import Invalid_Parameters_Exception
-from Utils import lt_tol
-from Utils import merge_maps
+from .Utils import dist
+from .Utils import eq_tol
+from .Utils import Invalid_Parameters_Exception
+from .Utils import lt_tol
+from .Utils import merge_maps
 
 
 def compute_centrality(nodes, origins, compute_r, compute_g, compute_b,

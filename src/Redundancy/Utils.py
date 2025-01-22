@@ -11,15 +11,17 @@ from arcpy import CheckOutExtension
 from arcpy import Describe
 from arcpy import ListFields
 from arcpy import MakeFeatureLayer_management
-from arcpy import RefreshCatalog
+# from arcpy import RefreshCatalog
+from arcpy import RefreshLayer
 from arcpy import SaveToLayerFile_management
 from arcpy import Select_analysis
 from arcpy.da import SearchCursor
-from arcpy.mapping import AddLayer
-from arcpy.mapping import Layer
-from arcpy.mapping import ListDataFrames
-from arcpy.mapping import MapDocument
-from collections import Hashable
+# from arcpy.mapping import AddLayer
+# from arcpy.mapping import Layer
+# from arcpy.mapping import ListDataFrames
+# from arcpy.mapping import MapDocument
+from arcpy import mp
+from collections.abc import Hashable
 from csv import writer
 from os.path import join
 from sys import path
@@ -49,8 +51,13 @@ def add_layer_to_display(layer):
     Returns True on success and False on failure.
     """
     try:
-        data_frame = ListDataFrames(MapDocument("CURRENT"), "Layers")[0]
-        AddLayer(data_frame, Layer(layer), "AUTO_ARRANGE")
+        # data_frame = ListDataFrames(MapDocument("CURRENT"), "Layers")[0]
+        # AddLayer(data_frame, Layer(layer), "AUTO_ARRANGE")
+
+        aprx = mp.ArcGISProject("CURRENT")
+        active_map = aprx.activeMap
+        active_map.addLayer(layer, "AUTO_ARRANGE")
+
         return True
     except:
         return False
@@ -187,7 +194,8 @@ def write_rows_to_csv(rows, output_dir, output_name):
     file_name = f"{join(output_dir, output_name)}.csv"
     c = writer(open(file_name, "wb"))
     c.writerows(rows)
-    RefreshCatalog(file_name)
+    # RefreshCatalog(file_name)
+    RefreshLayer(file_name)
 
 
 def getEdgePathFromNetwork(network_file_path):

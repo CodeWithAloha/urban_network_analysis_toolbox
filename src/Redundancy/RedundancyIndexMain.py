@@ -16,7 +16,9 @@ from arcpy import env
 from arcpy import MakeFeatureLayer_management
 from arcpy import SaveToLayerFile_management
 from arcpy.da import UpdateCursor
-from arcpy.mapping import Layer
+# from arcpy.mapping import Layer
+# from arcpy.mp import Layer
+from arcpy import mp
 from Common.Utils.Progress_Bar import Progress_Bar
 from math import sqrt
 from .Network import construct_network_and_load_buildings
@@ -69,9 +71,13 @@ def main():
 
     # copy the input points into an output feature class
     AddMessage("Copying input points to output feature class ...")
-    input_points_layer = Layer(INPUT_POINTS)
+    # input_points_layer = Layer(INPUT_POINTS)
+    # output_feature_class = f"{join(INPUT_OUTPUT_DIRECTORY, INPUT_OUTPUT_FEATURE_CLASS_NAME)}.shp"
+    # CopyFeatures_management(in_features=input_points_layer,
+    #                         out_feature_class=output_feature_class)
+
     output_feature_class = f"{join(INPUT_OUTPUT_DIRECTORY, INPUT_OUTPUT_FEATURE_CLASS_NAME)}.shp"
-    CopyFeatures_management(in_features=input_points_layer,
+    CopyFeatures_management(in_features=INPUT_POINTS,
                             out_feature_class=output_feature_class)
     AddMessage("\tDone.")
 
