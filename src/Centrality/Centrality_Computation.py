@@ -75,7 +75,7 @@ def compute_centrality(nodes, origins, compute_r, compute_g, compute_b,
     if have_accumulations:
         def empty_accumulations(): return dict((field, 0.0) for field in
                                                accumulator_fields)
-    have_locations = hasattr(nodes.values()[0], LOCATION)
+    have_locations = hasattr(list(nodes.values())[0], LOCATION)
     if compute_s and not have_locations:
         # We cannot compute straightness without node locations
         compute_s = False
