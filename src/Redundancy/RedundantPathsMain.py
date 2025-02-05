@@ -21,17 +21,17 @@ from arcpy import SaveToLayerFile_management
 from arcpy.da import UpdateCursor
 from collections import defaultdict
 from src.Common.Utils.Progress_Bar import Progress_Bar
-from Network import construct_network_and_load_buildings
+from src.Redundancy.Network import construct_network_and_load_buildings
 from os.path import join
-from RedundantPaths import find_all_paths
+from src.Redundancy.RedundantPaths import find_all_paths
 from sys import argv
 from sys import path
-from Utils import add_layer_to_display
-from Utils import flagged_points
-from Utils import is_number
-from Utils import network_cost_attributes
-from Utils import select_edges_from_network
-from Utils import write_rows_to_csv
+from src.Redundancy.Utils import add_layer_to_display
+from src.Redundancy.Utils import flagged_points
+from src.Redundancy.Utils import is_number
+from src.Redundancy.Utils import network_cost_attributes
+from src.Redundancy.Utils import select_edges_from_network
+from src.Redundancy.Utils import write_rows_to_csv
 
 
 def main():

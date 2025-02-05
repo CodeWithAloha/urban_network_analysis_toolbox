@@ -7,7 +7,7 @@ __date__ = 'August 12, 2013'
 
 from arcpy import AddMessage
 from collections import defaultdict
-from Dijkstra import find_shortest_path
+from src.Redundancy.Dijkstra import find_shortest_path
 
 
 def find_all_paths(network, points, coeff, origin_id, destination_id,

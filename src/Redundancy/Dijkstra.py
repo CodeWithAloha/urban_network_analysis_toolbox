@@ -7,8 +7,8 @@ __date__ = 'August 8, 2013'
 
 from collections import defaultdict
 from src.Common.Data_Structures.PriorityQueue import PriorityQueue
-from Network import csNetwork
-from Utils import memoized
+from src.Redundancy.Network import csNetwork
+from src.Redundancy.Utils import memoized
 
 
 def _path(parent, node):

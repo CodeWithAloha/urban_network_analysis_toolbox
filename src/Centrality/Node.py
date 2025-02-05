@@ -11,8 +11,8 @@
 Script for representation of a weighted, undirected graph.
 """
 
-from Constants import NEIGHBORS
-from Constants import WEIGHT
+from src.Centrality.Constants import NEIGHBORS
+from src.Centrality.Constants import WEIGHT
 
 
 class Node:

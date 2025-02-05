@@ -18,12 +18,12 @@ from arcpy.da import SearchCursor
 from collections import defaultdict
 from math import sqrt
 from time import time
-from Utils import arcGISPointAsTuple
-from Utils import calculate_network_locations
-from Utils import fields
-from Utils import getEdgePathFromNetwork
-from Utils import network_locations_calculated
-from Utils import polyline_points
+from src.Redundancy.Utils import arcGISPointAsTuple
+from src.Redundancy.Utils import calculate_network_locations
+from src.Redundancy.Utils import fields
+from src.Redundancy.Utils import getEdgePathFromNetwork
+from src.Redundancy.Utils import network_locations_calculated
+from src.Redundancy.Utils import polyline_points
 
 
 class csNetwork(object):

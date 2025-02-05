@@ -14,19 +14,19 @@ These are very basic sanity checks, they do not fully test the centrality
 """
 # TODO(mikemeko): add more tests
 
-from Centrality_Computation import compute_centrality
-from Constants import INFINITE_RADIUS
-from Constants import BETWEENNESS
-from Constants import CLOSENESS
-from Constants import GRAVITY
-from Constants import LOCATION
-from Constants import REACH
-from Constants import STRAIGHTNESS
+from src.Centrality.Centrality_Computation import compute_centrality
+from src.Centrality.Constants import INFINITE_RADIUS
+from src.Centrality.Constants import BETWEENNESS
+from src.Centrality.Constants import CLOSENESS
+from src.Centrality.Constants import GRAVITY
+from src.Centrality.Constants import LOCATION
+from src.Centrality.Constants import REACH
+from src.Centrality.Constants import STRAIGHTNESS
 from math import log
 from math import sqrt
-from Node import Node
+from src.Centrality.Node import Node
 import unittest
-from Utils import eq_tol
+from src.Centrality.Utils import eq_tol
 
 
 def construct_graph(node_ids, edges):
