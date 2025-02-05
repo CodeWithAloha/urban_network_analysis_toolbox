@@ -6,8 +6,8 @@ __author__ = 'raul_kalvo, mikemeko'
 __date__ = 'May 4, 2013'
 
 from arcpy import AddMessage
-from .Dijkstra import find_shortest_path
-from .Utils import edge_building_weight_sum
+from Dijkstra import find_shortest_path
+from Utils import edge_building_weight_sum
 
 
 def find_redundancy_index(network, points, edge_to_points, coeff, origin_id,

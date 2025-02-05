@@ -19,19 +19,19 @@ from arcpy.da import UpdateCursor
 # from arcpy.mapping import Layer
 # from arcpy.mp import Layer
 from arcpy import mp
-from Common.Utils.Progress_Bar import Progress_Bar
+from src.Common.Utils.Progress_Bar import Progress_Bar
 from math import sqrt
-from .Network import construct_network_and_load_buildings
+from Network import construct_network_and_load_buildings
 from os.path import join
-from .RedundancyIndex import find_redundancy_index
+from RedundancyIndex import find_redundancy_index
 from sys import argv
 from sys import path
-from .Utils import add_layer_to_display
-from .Utils import fields
-from .Utils import flagged_points
-from .Utils import is_number
-from .Utils import network_cost_attributes
-from .Utils import select_edges_from_network
+from Utils import add_layer_to_display
+from Utils import fields
+from Utils import flagged_points
+from Utils import is_number
+from Utils import network_cost_attributes
+from Utils import select_edges_from_network
 
 
 def main():

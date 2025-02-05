@@ -6,9 +6,9 @@ __author__ = 'mikemeko'
 __date__ = 'August 8, 2013'
 
 from collections import defaultdict
-from Common.Data_Structures.PriorityQueue import PriorityQueue
-from .Network import csNetwork
-from .Utils import memoized
+from src.Common.Data_Structures.PriorityQueue import PriorityQueue
+from Network import csNetwork
+from Utils import memoized
 
 
 def _path(parent, node):
