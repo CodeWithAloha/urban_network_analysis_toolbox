@@ -7,4 +7,4 @@ __author__ = 'mikemeko@mit.edu (Michael Mekonnen)'
 from Redundancy.RedundancyIndexMain import main
 
 if __name__ == '__main__':
-  main()
+    main()
