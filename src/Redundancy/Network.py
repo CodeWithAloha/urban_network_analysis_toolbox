@@ -18,12 +18,12 @@ from arcpy.da import SearchCursor
 from collections import defaultdict
 from math import sqrt
 from time import time
-from .Utils import arcGISPointAsTuple
-from .Utils import calculate_network_locations
-from .Utils import fields
-from .Utils import getEdgePathFromNetwork
-from .Utils import network_locations_calculated
-from .Utils import polyline_points
+from src.Redundancy.Utils import arcGISPointAsTuple
+from src.Redundancy.Utils import calculate_network_locations
+from src.Redundancy.Utils import fields
+from src.Redundancy.Utils import getEdgePathFromNetwork
+from src.Redundancy.Utils import network_locations_calculated
+from src.Redundancy.Utils import polyline_points
 
 
 class csNetwork(object):
@@ -130,7 +130,8 @@ class csNetwork(object):
             tag = ""
             if self.E[e].Hidden:
                 tag = "hidden"
-            AddMessage(f"{e:>6} {self.E[e].Length:10.2f} {tag:>10} \t{self.E[e].Nodes}")
+            AddMessage(
+                f"{e:>6} {self.E[e].Length:10.2f} {tag:>10} \t{self.E[e].Nodes}")
 
     def edgeIDbyNodes(self, node1, node2):
         for e1 in self.N[node1].Edges:
@@ -476,8 +477,8 @@ class csNode(object):
         """
         d = sqrt((point[0] - self.p[0]) * (point[0] - self.p[0]) + (point[1] -
                                                                     self.p[1]) * (point[1] - self.p[1]) + (
-                         point[2] - self.p[2]) * (
-                         point[2] - self.p[2]))
+            point[2] - self.p[2]) * (
+            point[2] - self.p[2]))
         return d
 
     # Properties
